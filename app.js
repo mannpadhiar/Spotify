@@ -1,7 +1,7 @@
 let currentSong = new Audio();
 let songs;
 async function getSongs(){
-    let a = await fetch("http://127.0.0.1:5500/songs/");
+    let a = await fetch("https://github.com/mannpadhiar/Spotify/tree/main/songs/");
     let responce = await a.text();
     let div = document.createElement("div");
     div.innerHTML = responce;
