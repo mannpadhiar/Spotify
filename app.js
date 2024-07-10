@@ -1,7 +1,7 @@
 let currentSong = new Audio();
 let songs;
 async function getSongs(){
-    let a = await fetch("http://127.0.0.1:5500/songs/");
+    let a = await fetch("https://github.com/mannpadhiar/Spotify/tree/main/songs/");
     let responce = await a.text();
     let div = document.createElement("div");
     div.innerHTML = responce;
@@ -17,14 +17,14 @@ async function getSongs(){
     return songs;
 }
 
-const playMusic = (track,pause = false) =>{
+    const playMusic = (track,pause = false) =>{
     currentSong.src = "/songs/"+track;
     if(!pause){
         currentSong.play();
         play.src = "pause.svg";
     }
-    document.querySelector(".songInfo").innerHTML = track.replaceAll("%20"," ");
-    document.querySelector(".songTime").innerHTML = "00-00/00-00";
+    document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ");;
+    document.querySelector(".songTime").innerHTML = "00-00";
 }
 
 //convert seconds into 00/00 formet
@@ -53,7 +53,7 @@ async function main(){
     
     //for sing list
     songs = await getSongs();
-    
+
     playMusic(songs[0],true);
 
     let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
@@ -102,7 +102,8 @@ async function main(){
     });
 
     currentSong.addEventListener("timeupdate",()=>{
-        document.querySelector(".songTime").innerHTML = `${convertSeconds(currentSong.currentTime)} / ${convertSeconds(currentSong.duration)}`;
+        document.querySelector(".songTime").innerHTML = `${convertSeconds(currentSong.currentTime)}`;
+        document.querySelector(".songDuration").innerHTML =`${convertSeconds(currentSong.duration)}`;
         document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration*100) +"%";
         document.querySelector(".innerbar").style.width = (currentSong.currentTime / currentSong.duration*100) +"%";
     });
@@ -110,7 +111,7 @@ async function main(){
 
    document.querySelector(".seekBar").addEventListener("click",x =>{
         let persent = (x.offsetX/x.target.getBoundingClientRect().width)*100;
-        document.querySelector(".circle").style.left = persent + "%";
+        document.querySelector(".circle").style.left = persent + "%"; 
         document.querySelector(".innerbar").style.width = persent + "%";
 
         currentSong.currentTime = currentSong.duration*persent/100;

@@ -192,6 +192,10 @@ body{
     flex-wrap: wrap;
 }
 
+.info div{
+    word-break: break-all;
+}
+
 .songList ul li{
     width: 87%;
     gap: 10px;
@@ -222,6 +226,7 @@ body{
 }
 
 .seekBar{
+    display: flex;
     background-color: rgba(121, 119, 119, 0.979);
     height: 3px;
     width: 100%;
@@ -231,16 +236,25 @@ body{
     position: relative;
 }
 
+.outerSeekBar{
+    width: 50%;
+}
+.blowBar{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
 .circle{
     height: 12px;
     width: 12px;
     border-radius: 50%;
     background-color: aliceblue;
     position: relative;
-    bottom: 6.5px;
-    left: 0%;
+    bottom: 5px;
+    left: 0px;
     transition: left .1s ease;  
-    visibility: hidden;
+    visibility: visible;
 }
 
 .innerbar{
@@ -252,9 +266,9 @@ body{
     position: relative; 
 }
 
-.seekBar:hover .circle{
+/* .seekBar:hover .circle{
     visibility: visible;
-}
+} */
 
 .seekBar:hover .innerbar{
     visibility: visible;
