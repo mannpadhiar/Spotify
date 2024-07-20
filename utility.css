@@ -40,6 +40,16 @@
     padding: 13px;
     padding-left: 20px;
 }
+.visibility_none{
+    display: none;
+}
+
+.auto-scroll {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    white-space: nowrap; /* Prevents line breaks within the container */
+    width: 10vw; /* Adjust the width as needed */
+    display: block; /* Ensures the element is block-level for paragraphs */
+}
 
 
 
@@ -48,54 +58,52 @@
 
 
 
+/* to remove selection */
+
+
+
+body {
+    user-select: none; /* Standard syntax */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+}
 
 
 
 
-/* Scrollbar styles for WebKit browsers (Chrome, Safari) */
+/* WebKit (Chrome, Safari, Opera) scrollbar customization */
 ::-webkit-scrollbar {
-    width: 12px; /* Width of the vertical scrollbar */
-    height: 12px; /* Height of the horizontal scrollbar */
+    width: 8px; /* Set width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-    background: #1e1e1e; /* Track color */
-    border-radius: 10px; /* Rounded corners for the track */
-    margin: 2px; /* Optional: margin to prevent the thumb from reaching the edges */
+    background-color: #222; /* Track color (background behind the scrollbar) */
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #4a4a4a; /* Thumb color */
+    background-color: #444; /* Thumb color (the draggable part of the scrollbar) */
     border-radius: 10px; /* Rounded corners for the thumb */
-    border: 3px solid #1e1e1e; /* Padding around thumb for better contrast */
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background-color: #606060; /* Thumb hover color */
-}
-
-/* Hide scrollbar buttons (top and bottom icons) */
+/* Hide scrollbar buttons and borders */
 ::-webkit-scrollbar-button {
-    display: none; /* Hide the scrollbar buttons */
+    display: none;
 }
 
-/* Scrollbar styles for Firefox */
-html {
-    scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #4a4a4a #1e1e1e; /* Thumb and track color */
+::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
-/* General body styles for a dark theme */
+/* Firefox scrollbar customization */
+/* Note: Firefox currently doesn't support hiding scrollbar buttons */
+
+/* Dark theme adjustments */
 body {
-    background-color: #121212; /* Background color */
-    color: #e0e0e0; /* Text color */
-    font-family: Arial, sans-serif; /* Font style */
-    margin: 0;
-    padding: 0;
+    background-color: #333; /* Dark background color */
+    color: #eee; /* Light text color */
 }
 
-/* Optional: Ensure consistent appearance in Edge */
-* {
-    -ms-overflow-style: scrollbar; /* Ensure scrollbar is visible in Edge */
-    scrollbar-width: thin; /* Thin scrollbar for Edge */
+.content {
+    padding: 20px;
 }

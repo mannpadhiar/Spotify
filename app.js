@@ -1,30 +1,48 @@
 let currentSong = new Audio();
 let songs;
-async function getSongs(){
-    let a = await fetch("https://github.com/mannpadhiar/Spotify/tree/main/songs/");
+let currFolder;
+let isLikeSelected = false;
+let likedSongs = [];
+async function getSongs(folder){
+    currFolder = folder;
+    let a = await fetch(`http://127.0.0.1:5500/${folder}`);
     let responce = await a.text();
     let div = document.createElement("div");
     div.innerHTML = responce;
     let as = div.getElementsByTagName("a"); 
-    let songs = [];
+    songs = [];
 
     for(let i=0;i<as.length;i++){
         let element = as[i];
         if(element.href.endsWith(".mp3")){
-            songs.push(element.href.split("/songs/")[1]);
+            songs.push(element.href.split(`/${folder}/`)[1]);
         }
     }
     return songs;
 }
 
-    const playMusic = (track,pause = false) =>{
-    currentSong.src = "/songs/"+track;
+const playMusic = (track,pause = false,playFolder = currFolder) =>{
+    currentSong.src = `/${playFolder}/` + track;
+    console.log(currentSong.src);
     if(!pause){
         currentSong.play();
         play.src = "pause.svg";
     }
-    document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ");;
-    document.querySelector(".songTime").innerHTML = "00-00";
+    document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ").split('.')[0];
+    document.querySelector(".songTime").innerHTML = "00:00";
+    document.querySelector(".songDuration").innerHTML = "00:00";
+}
+
+function playMusicLike(track,playFolder){
+    currentSong.src = `/songs/${playFolder}/` + track;
+    console.log(currentSong.src);
+    // if(!pause){
+        currentSong.play();
+        play.src = "pause.svg";
+    // }
+    document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ");
+    document.querySelector(".songTime").innerHTML = "00:00";
+    document.querySelector(".songDuration").innerHTML = "00:00";
 }
 
 //convert seconds into 00/00 formet
@@ -52,13 +70,13 @@ function convertSeconds(seconds) {
 async function main(){
     
     //for sing list
-    songs = await getSongs();
+    songs = await getSongs("songs/temp");
 
     playMusic(songs[0],true);
 
     let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
     for(const song of songs){
-        songUL.innerHTML = songUL.innerHTML + '<li><img src="music.svg" alt="music" class="invert"><div class="info"><div>'+song.replaceAll("%20"," ")+'</div><div>Song detail</div></div><div class="playNow"><span>Play Now</span><img src="play.svg" class="invert" alt=""></div></li>';
+        songUL.innerHTML = songUL.innerHTML + '<li><img src="music.svg" alt="music" class="invert"><div class="info"><div class="visibility_none">'+ song.replaceAll("%20"," ") +'</div><div class="infoName">'+song.replaceAll("%20"," ").split('.')[0]+'</div><div>Song detail</div></div><div class="playNow"><span>Play Now</span><img src="play.svg" class="invert" alt=""></div></li>';
     }
 
     var audio = new Audio(songs[0]);
@@ -72,7 +90,11 @@ async function main(){
 
     Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach(e =>{
         e.addEventListener("click", element => {
-            playMusic(e.querySelector(".info").firstElementChild.innerHTML);
+            if(isLikeSelected){
+                playMusicLike(e.querySelector(".info").firstElementChild.innerHTML.split('/')[2] ,+e.querySelector(".info").firstElementChild.innerHTML.split('/')[1]);
+            }else{
+                playMusic(e.querySelector(".info").firstElementChild.innerHTML);
+            }
         });
     });
       
@@ -129,7 +151,7 @@ async function main(){
 
    //for privous and next song
 
-   previous.addEventListener("click",() =>{
+    previous.addEventListener("click",() =>{
         let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
         console.log(index);
         if((index-1) >= 0){
@@ -145,28 +167,136 @@ async function main(){
         }
     });
 
+    //volumeBar
+
+    document.querySelector(".volumeBar").getElementsByTagName("input")[0].addEventListener("change",(e)=>{
+        currentSong.volume = parseInt(e.target.value)/100;
+        console.log(parseInt(e.target.value)/100);
+    });
+
+    //for select a card
+
+    function selectFromCard(songs){
+        if(isLikeSelected){
+            for(const song of songs){
+                songUL.innerHTML = songUL.innerHTML + '<li><img src="music.svg" alt="music" class="invert"><div class="info"><div class="visibility_none">'+ song.replaceAll("%20"," ") +'</div>  <div class="infoName auto-scroll" id="flavoursParagraph">'+song.split('/')[2].replaceAll("%20"," ").split('.')[0]+'</div> <div>Song detail</div></div><div class="playNow"><span>Play Now</span><img src="play.svg" class="invert" alt=""></div></li>';
+            }
+        }
+        else{
+            for(const song of songs){
+                songUL.innerHTML = songUL.innerHTML + '<li><img src="music.svg" alt="music" class="invert"><div class="info"><div class="visibility_none">'+ song.replaceAll("%20"," ") +'</div><div class="infoName">'+song.replaceAll("%20"," ").split('.')[0]+'</div><div>Song detail</div></div><div class="playNow"><span>Play Now</span><img src="play.svg" class="invert" alt=""></div></li>';
+            }
+        }    
+        document.querySelector(".left").style.left = 0;
+
+        Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach(e =>{
+            e.addEventListener("click", element => {
+                console.log(e.querySelector(".info").firstElementChild.innerHTML);
+                if(isLikeSelected){
+                    playMusicLike(e.querySelector(".info").firstElementChild.innerHTML.split('/')[2],e.querySelector(".info").firstElementChild.innerHTML.split('/')[1]);
+                }else{
+                    playMusic(e.querySelector(".info").firstElementChild.innerHTML);
+                }            
+            });
+        });
+    }
+
+    document.querySelector(".temp").addEventListener("click", async()=>{
+        isLikeSelected = false;
+        songs = await getSongs("songs/temp");
+        console.log("temp2 selected");
+        songUL.innerHTML = "";
+        selectFromCard(songs);
+    });
+
+    document.querySelector(".temp2").addEventListener("click", async()=>{
+        isLikeSelected = false;
+        songs = await getSongs("songs/temp2");
+        console.log("temp2 selected");
+        songUL.innerHTML = "";
+        selectFromCard(songs);
+    });
+
+    document.querySelector(".top_50_india").addEventListener("click", async()=>{
+        isLikeSelected = false;
+        songs = await getSongs("songs/Inida_50");
+        console.log("temp2 selected");
+        songUL.innerHTML = "";
+        selectFromCard(songs);
+    });
+
+    
+    document.querySelector(".top_50_global").addEventListener("click", async()=>{
+        isLikeSelected = false;
+        songs = await getSongs("songs/Global_50");
+        console.log("Global_50 selected");
+        songUL.innerHTML = "";
+        selectFromCard(songs);
+    });
+
+    //for like a song
+
+    document.querySelector(".likeButton").addEventListener("click",()=>{
+        if(!(likedSongs.includes(currentSong.src.split("/songs")[1])))likedSongs.push(currentSong.src.split("/songs")[1]);
+        
+        console.log(currentSong.src.split("/"));
+        // document.querySelector(".likeCard").pointerEevents = none;
+    });
+
+    document.querySelector(".likeCard").addEventListener("click",()=>{
+        isLikeSelected = true;
+        songUL.innerHTML = "";
+        selectFromCard(likedSongs);
+    }); 
+
+    
 }
 main();
 
 
+//animation on like button
+
+
+document.querySelector('.likeButton').addEventListener('click', function() {
+    const likeButton = this;
+    likeButton.classList.add('animate');
+    
+    
+    // Remove the class after the animation ends to allow re-triggering
+    likeButton.addEventListener('animationend', function() {
+        likeButton.classList.remove('animate');
+    }, { once: true });
+});
 
 
 
-const flavoursContainer = document.getElementById('flavoursContainer');
-        const scrollStep = 1; // Pixels to move per step
-        const scrollDelay = 65; // Delay in milliseconds
+
+class AutoScroller {
+    constructor(element, scrollStep = 1, scrollDelay = 65) {
+        this.element = element;
+        this.scrollStep = scrollStep;
+        this.scrollDelay = scrollDelay;
+        this.scrollPosition = 0;
 
         window.addEventListener('load', () => {
-            const contentWidth = flavoursContainer.scrollWidth;
-            let scrollPosition = 0;
-
-            const interval = setInterval(() => {
-                if (scrollPosition >= contentWidth) {
-                    flavoursContainer.scrollLeft = 0;
-                    clearInterval(interval); // Stop the interval after one loop
-                } else {
-                    scrollPosition += scrollStep;
-                    flavoursContainer.scrollLeft = scrollPosition;
-                }
-            }, scrollDelay);
+            this.contentWidth = this.element.scrollWidth;
+            this.startScrolling();
         });
+    }
+
+    startScrolling() {
+        this.interval = setInterval(() => {
+            if (this.scrollPosition >= this.contentWidth) {
+                this.element.scrollLeft = 0;
+                clearInterval(this.interval); // Stop the interval after one loop
+            } else {
+                this.scrollPosition += this.scrollStep;
+                this.element.scrollLeft = this.scrollPosition;
+            }
+        }, this.scrollDelay);
+    }
+}
+
+new AutoScroller(document.getElementById('flavoursParagraph'), 1, 65);
+
+        

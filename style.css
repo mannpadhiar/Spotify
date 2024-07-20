@@ -38,7 +38,7 @@ body{
     gap: 15px;
     width: 25px;
     list-style: none;
-    padding: 15px 0  15px 0;
+    padding: 15px 0  25px 0;
     font-size: 16px; 
     display: flex;
 }
@@ -47,6 +47,7 @@ body{
     display: flex;
     justify-content: space-between;
     background-color: #1b1b1b;
+    box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.753); 
 }
 
 .header > *{
@@ -60,7 +61,7 @@ body{
 }
 
 .cardContainer{
-    display: flex;
+    display: flex;  
     /* justify-content: space-between; */
     gap: 10px;
     flex-wrap: wrap;
@@ -69,14 +70,23 @@ body{
     max-height: 76vh;
 }
 
-
-
 .card{
     width: 150px;
     padding: 10px;
     border-radius: 10px;
-    background-color: #272727;
+    background-color: #1a1a1a;
     position: relative;
+    transition: all 0.5 ease;
+}
+
+.card:hover{
+    background-color: #242424;
+    
+}
+
+.card:hover .play{
+    opacity: 1;
+    top: 130px;
 }
 
 .card h2{
@@ -98,10 +108,10 @@ body{
 
 .play{
     position: absolute;
-    top: 130px;
+    top: 160px;
     right: 20px;
     opacity: 0;
-    transition: all 1s ease-out;
+    transition: all .6s ease-out;
 }
 
 .buttons > *{
@@ -178,7 +188,6 @@ body{
     display: flex;
     justify-content: center;
     gap: 12px;
-    margin-right: 2.5vw;
 }
 
 .songButtons > *{
@@ -190,11 +199,30 @@ body{
     height: 62.8vh;
     width: 100%;
     flex-wrap: wrap;
+    overflow: scroll;
+    /* overflow-y: scroll; */
 }
 
 .info div{
     word-break: break-all;
 }
+
+.infoName,.Like_song_Infoname{
+    color: #c9c9c9;  
+    overflow-x: hidden;
+    white-space: nowrap;
+    width: 10vw;
+    scrollbar-width: none; 
+    position: relative;
+    justify-self: start;
+}
+
+.InfoName::-webkit-scrollbar {
+    display: none;
+}
+
+/* for liked songs */
+
 
 .songList ul li{
     width: 87%;
@@ -236,9 +264,44 @@ body{
     position: relative;
 }
 
+.likeButton{
+    cursor: pointer;
+    margin:0 5px 0 0;
+}
+
+.animate{
+    animation: scaleUpDown 0.25s ease;
+}
+
+@keyframes scaleUpDown {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.75);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.volume{
+    width: 7vw;
+    height: 3px;
+    align-self: center;
+    margin:0 0 0 4px;
+}
+
+.volumeBar{
+    display: flex;
+    justify-content: flex-end;
+    width: 33%;
+}
+
 .outerSeekBar{
     width: 50%;
 }
+
 .blowBar{
     display: flex;
     justify-content: center;
@@ -254,7 +317,7 @@ body{
     bottom: 5px;
     left: 0px;
     transition: left .1s ease;  
-    visibility: visible;
+    visibility: hidden;
 }
 
 .innerbar{
@@ -264,11 +327,12 @@ body{
     border-radius: 60px;
     transition: left .5s ease; 
     position: relative; 
+    z-index: 1;
 }
 
-/* .seekBar:hover .circle{
+.seekBar:hover .circle{
     visibility: visible;
-} */
+}
 
 .seekBar:hover .innerbar{
     visibility: visible;
@@ -280,7 +344,7 @@ body{
     color: #c9c9c9;  
     overflow-x: hidden;
     white-space: nowrap;
-    width: 12vw;
+    width: 33%;
     scrollbar-width: none; 
     position: relative;
     justify-self: start;
@@ -298,13 +362,20 @@ body{
 
 .songButtons{
     justify-self: center;
+    text-align: center;
+    width: 33%;
 }
 
 .songTime{
+    position: relative;
+    left: 15.5px;
     justify-self: end;
+    background-color: #000000ec;
+    z-index: 1;
+    padding-right: 4px;
 }
 
-@media screen and (max-width:1278px){
+@media screen and (max-width:1200px){
     .left{
         position: absolute;
         z-index: 2;
@@ -329,15 +400,23 @@ body{
     .close img{
         display: inline;
     }
+    .infoName{
+        width: 200px;
+    }
+    /* .songInfo{
+        width: 25vw;
+    } */
 }
 
-@media screen and (max-width:597px){
+@media screen and (max-width:435px){
     .playbar{
         width: 85vw;
         bottom: 40px;
     }
     .cardContainer{
         height: 75vh;
+        margin: 10px 0px 0px 10px;
+        justify-content: space-between;
     }
     .left{
         max-height:98%;
@@ -345,7 +424,20 @@ body{
     .library{
         height: 74vh;
     }
+    .spotifyPalylist{
+        padding: 10px 10px 10px 2px;
+    }
+    .spotifyPalylist h1{
+        font-size: 3vh;
+    }
     .spotifyPalylist .card{
-        width: 30vw;
+        width: 34vw;
+        margin: 6.5px;
+    }
+    /* .infoName{
+        width: 35vw;
+    } */
+    .volume,.volImage{
+        display: none;
     }
 }
