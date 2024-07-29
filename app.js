@@ -3,28 +3,32 @@ let songs;
 let currFolder;
 let isLikeSelected = false;
 let likedSongs = [];
-async function getSongs(folder){
-    currFolder = folder;
-    let a = await fetch(`http://127.0.0.1:5500/${folder}`);
-    let responce = await a.text();
-    let div = document.createElement("div");
-    div.innerHTML = responce;
-    let as = div.getElementsByTagName("a"); 
-    songs = [];
 
-    for(let i=0;i<as.length;i++){
-        let element = as[i];
-        if(element.href.endsWith(".mp3")){
-            songs.push(element.href.split(`/${folder}/`)[1]);
-        }
+async function getSongs(folder) {
+    currFolder = folder;
+    const baseUrl = 'https://api.github.com/repos/mannpadhiar/Spotify/contents';
+    
+    try {
+        let response = await fetch(`${baseUrl}/${folder}`);
+        if (!response.ok) throw new Error('Failed to fetch folder contents');
+        
+        let data = await response.json();
+        
+        songs = data
+            .filter(file => file.name.endsWith('.mp3'))
+            .map(file => file.name);
+        
+        return songs;
+    } catch (error) {
+        console.error('Error fetching songs:', error);
+        return [];
     }
-    return songs;
 }
 
-const playMusic = (track,pause = false,playFolder = currFolder) =>{
-    currentSong.src = `/${playFolder}/` + track;
+const playMusic = (track, pause = false, playFolder = currFolder) => {
+    currentSong.src = `https://raw.githubusercontent.com/mannpadhiar/Spotify/main/${playFolder}/` + track;
     console.log(currentSong.src);
-    if(!pause){
+    if (!pause) {
         currentSong.play();
         play.src = "pause.svg";
     }
@@ -33,13 +37,11 @@ const playMusic = (track,pause = false,playFolder = currFolder) =>{
     document.querySelector(".songDuration").innerHTML = "00:00";
 }
 
-function playMusicLike(track,playFolder){
-    currentSong.src = `/songs/${playFolder}/` + track;
+function playMusicLike(track, playFolder) {
+    currentSong.src = `https://raw.githubusercontent.com/mannpadhiar/Spotify/main/songs/${playFolder}/` + track;
     console.log(currentSong.src);
-    // if(!pause){
-        currentSong.play();
-        play.src = "pause.svg";
-    // }
+    currentSong.play();
+    play.src = "pause.svg";
     document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ");
     document.querySelector(".songTime").innerHTML = "00:00";
     document.querySelector(".songDuration").innerHTML = "00:00";
@@ -234,6 +236,14 @@ async function main(){
         selectFromCard(songs);
     });
 
+    document.querySelector(".oldSongs").addEventListener("click", async()=>{
+        isLikeSelected = false;
+        songs = await getSongs("songs/old_songs");
+        console.log("oldSongs selected");
+        songUL.innerHTML = "";
+        selectFromCard(songs);
+    });
+
     //for like a song
 
     document.querySelector(".likeButton").addEventListener("click",()=>{
@@ -249,6 +259,7 @@ async function main(){
         selectFromCard(likedSongs);
     }); 
 
+    
     
 }
 main();
