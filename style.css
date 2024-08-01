@@ -434,9 +434,12 @@ body{
         width: 34vw;
         margin: 6.5px;
     }
-    /* .infoName{
-        width: 35vw;
-    } */
+    .info{
+        width: 400px;
+    }
+    .infoName{
+        width: 400px;
+    }
     .volume,.volImage{
         display: none;
     }
