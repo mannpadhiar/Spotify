@@ -2,6 +2,7 @@ let currentSong = new Audio();
 let songs;
 let currFolder;
 let isLikeSelected = false;
+let likeButtonClicked = false;
 let likedSongs = [];
 async function getSongs(folder){
     currFolder = folder;
@@ -31,6 +32,13 @@ const playMusic = (track,pause = false,playFolder = currFolder) =>{
     document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ").split('.')[0];
     document.querySelector(".songTime").innerHTML = "00:00";
     document.querySelector(".songDuration").innerHTML = "00:00";
+
+    if(likedSongs.includes(currentSong.src.split("/songs")[1])){
+        document.querySelector(".likeButton").style.color = 'red';
+    }
+    else{
+        document.querySelector(".likeButton").style.color = 'white';
+    }
 }
 
 function playMusicLike(track,playFolder){
@@ -40,9 +48,16 @@ function playMusicLike(track,playFolder){
         currentSong.play();
         play.src = "pause.svg";
     // }
-    document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ");
+    document.querySelector(".songInfo").innerHTML = track.split("/").pop().replaceAll("%20", " ").split('.')[0];
     document.querySelector(".songTime").innerHTML = "00:00";
     document.querySelector(".songDuration").innerHTML = "00:00";
+
+    if(likedSongs.includes(currentSong.src.split("/songs")[1])){
+        document.querySelector(".likeButton").style.color = 'red';
+    }
+    else{
+        document.querySelector(".likeButton").style.color = 'white';
+    }
 }
 
 //convert seconds into 00/00 formet
@@ -139,7 +154,7 @@ async function main(){
         currentSong.currentTime = currentSong.duration*persent/100;
    });
 
-   //for menu,arrowLeft button
+   //for hamburger,arrowLeft button
 
    document.querySelector(".hamburger").addEventListener("click",()=>{
         document.querySelector(".left").style.left = 0;
@@ -242,11 +257,22 @@ async function main(){
         selectFromCard(songs);
     });
 
-    //for like a song
+    //for ad liked song
 
     document.querySelector(".likeButton").addEventListener("click",()=>{
-        if(!(likedSongs.includes(currentSong.src.split("/songs")[1])))likedSongs.push(currentSong.src.split("/songs")[1]);
-        
+
+        if(!(likedSongs.includes(currentSong.src.split("/songs")[1]))){
+            likedSongs.push(currentSong.src.split("/songs")[1]);
+            document.querySelector(".likeButton").style.color = 'red';
+        }
+        else if((likedSongs.includes(currentSong.src.split("/songs")[1]))){
+            document.querySelector(".likeButton").style.color = 'white';
+            let likedSongIndex = likedSongs.indexOf(currentSong.src.split("/songs")[1]);
+            while (likedSongIndex !== -1) {
+                likedSongs.splice(likedSongIndex, 1);
+                likedSongIndex = likedSongs.indexOf(currentSong.src.split("/songs")[1]);
+            }
+        }
         console.log(currentSong.src.split("/"));
         // document.querySelector(".likeCard").pointerEevents = none;
     });
@@ -256,6 +282,8 @@ async function main(){
         songUL.innerHTML = "";
         selectFromCard(likedSongs);
     }); 
+
+
 
     
     
