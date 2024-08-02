@@ -139,8 +139,17 @@ body{
     position: absolute;
     height: 30px;
     width: 30px;
-    left: 320px;
-    top: 20px;
+    left: 279px;
+    top: 12px;
+    display: none;
+}
+
+.close p{
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    left: 311px;
+    top: 16px;
     display: none;
 }
 
@@ -398,6 +407,9 @@ body{
         display: inline;
     }
     .close img{
+        display: inline;
+    }
+    .close p{
         display: inline;
     }
     .infoName{
