@@ -272,6 +272,7 @@ async function main(){
             }
         }
         console.log(currentSong.src.split("/"));
+        
         // document.querySelector(".likeCard").pointerEevents = none;
     });
 
