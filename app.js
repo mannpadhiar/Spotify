@@ -287,6 +287,7 @@ async function main(){
     document.querySelector(".likeCard").addEventListener("click",()=>{
         isLikeSelected = true;
         songUL.innerHTML = "";
+        
         selectFromCard(likedSongs);
     }); 
 
