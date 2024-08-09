@@ -257,6 +257,14 @@ async function main(){
         selectFromCard(songs);
     });
 
+    document.querySelector(".oldSongs_2").addEventListener("click", async()=>{
+        isLikeSelected = false;
+        songs = await getSongs("songs/oldSongs_2");
+        console.log("oldSongs@ selected");
+        songUL.innerHTML = "";
+        selectFromCard(songs);
+    });
+
     //for ad liked song
 
     document.querySelector(".likeButton").addEventListener("click",()=>{
