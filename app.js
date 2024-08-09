@@ -233,7 +233,7 @@ async function main(){
 
     document.querySelector(".top_50_india").addEventListener("click", async()=>{
         isLikeSelected = false;
-        songs = await getSongs("songs/india_50");
+        songs = await getSongs("songs/India_50");
         console.log("india selected");
         songUL.innerHTML = "";
         selectFromCard(songs);
