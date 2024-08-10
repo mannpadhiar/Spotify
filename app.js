@@ -166,16 +166,17 @@ async function main(){
    //for privous and next song
 
     previous.addEventListener("click",() =>{
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
-        console.log(index);
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0].replaceAll("%20", " "));
         if((index-1) >= 0){
             playMusic(songs[index-1]);
         }
-   });
+        console.log(index);
+    }); 
 
 
-   next.addEventListener("click",() =>{
-        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+    next.addEventListener("click",() =>{
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0].replaceAll("%20", " "));
+        console.log(index);
         if((index+1) < songs.length){
             playMusic(songs[index+1]);
         }
