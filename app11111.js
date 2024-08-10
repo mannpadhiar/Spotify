@@ -172,7 +172,7 @@ async function main(){
         if((index-1) >= 0){
             playMusic(songs[index-1]);
         }
-   });
+   }); 
 
 
    next.addEventListener("click",() =>{
