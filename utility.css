@@ -45,45 +45,32 @@
 }
 
 .auto-scroll {
-    overflow-x: auto; /* Enables horizontal scrolling */
-    white-space: nowrap; /* Prevents line breaks within the container */
-    width: 100px; /* Adjust the width as needed */
-    display: block; /* Ensures the element is block-level for paragraphs */
+    overflow-x: auto; 
+    white-space: nowrap; 
+    width: 100px; 
+    display: block;
 }
-
-
-
-
-
-
-
 
 /* to remove selection */
 
-
-
 body {
-    user-select: none; /* Standard syntax */
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
 }
 
-
-
-
-/* WebKit (Chrome, Safari, Opera) scrollbar customization */
 ::-webkit-scrollbar {
-    width: 8px; /* Set width of the scrollbar */
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #222; /* Track color (background behind the scrollbar) */
+    background-color: #222; /
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #444; /* Thumb color (the draggable part of the scrollbar) */
-    border-radius: 10px; /* Rounded corners for the thumb */
+    background-color: #444; 
+    border-radius: 10px; 
 }
 
 /* Hide scrollbar buttons and borders */
@@ -95,13 +82,11 @@ body {
     background: transparent;
 }
 
-/* Firefox scrollbar customization */
-/* Note: Firefox currently doesn't support hiding scrollbar buttons */
 
 /* Dark theme adjustments */
 body {
-    background-color: #333; /* Dark background color */
-    color: #eee; /* Light text color */
+    background-color: #000000; 
+    color: #eee; 
 }
 
 .content {

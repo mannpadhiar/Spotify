@@ -288,7 +288,9 @@ async function main(){
     document.querySelector(".likeCard").addEventListener("click",()=>{
         isLikeSelected = true;
         songUL.innerHTML = "";
-        
+        if(likedSongs.length == 0){
+            songUL.innerHTML = songUL.innerHTML + '<li>no like songs are selected</li>';
+        }
         selectFromCard(likedSongs);
     }); 
 
