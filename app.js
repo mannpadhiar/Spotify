@@ -14,9 +14,7 @@ async function getSongs(folder) {
         
         let data = await response.json();
         
-        songs = data
-            .filter(file => file.name.endsWith('.mp3'))
-            .map(file => file.name);
+        songs = data.filter(file => file.name.endsWith('.mp3')).map(file => file.name);
         
         return songs;
     } catch (error) {
@@ -124,6 +122,7 @@ async function main(){
     });
 
     // Event listener for space key press
+
     document.addEventListener("keyup", (event) => {
         if (event.code === "Space") {
             event.preventDefault(); 
@@ -143,6 +142,7 @@ async function main(){
         document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration*100) +"%";
         document.querySelector(".innerbar").style.width = (currentSong.currentTime / currentSong.duration*100) +"%";
     });
+
 //for touch in seekBar
 
    document.querySelector(".seekBar").addEventListener("click",x =>{
@@ -314,35 +314,5 @@ document.querySelector('.likeButton').addEventListener('click', function() {
     }, { once: true });
 });
 
-
-
-
-class AutoScroller {
-    constructor(element, scrollStep = 1, scrollDelay = 65) {
-        this.element = element;
-        this.scrollStep = scrollStep;
-        this.scrollDelay = scrollDelay;
-        this.scrollPosition = 0;
-
-        window.addEventListener('load', () => {
-            this.contentWidth = this.element.scrollWidth;
-            this.startScrolling();
-        });
-    }
-
-    startScrolling() {
-        this.interval = setInterval(() => {
-            if (this.scrollPosition >= this.contentWidth) {
-                this.element.scrollLeft = 0;
-                clearInterval(this.interval); // Stop the interval after one loop
-            } else {
-                this.scrollPosition += this.scrollStep;
-                this.element.scrollLeft = this.scrollPosition;
-            }
-        }, this.scrollDelay);
-    }
-}
-
-new AutoScroller(document.getElementById('flavoursParagraph'), 1, 65);
 
         
