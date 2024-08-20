@@ -26,6 +26,7 @@ async function getSongs(folder) {
 const playMusic = (track, pause = false, playFolder = currFolder) => {
     currentSong.src = `https://raw.githubusercontent.com/mannpadhiar/Spotify/main/${playFolder}/` + track;
     console.log(currentSong.src);
+    
     if (!pause) {
         currentSong.play();
         play.src = "pause.svg";
